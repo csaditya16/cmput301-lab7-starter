@@ -25,7 +25,7 @@ import org.junit.Test;
 
 import androidx.test.espresso.action.ViewActions;
 
-@RunWith(AndroidJUnit4.class)
+
 public class MainActivityTest {
     // Create the actual 'screen'
     @Rule
