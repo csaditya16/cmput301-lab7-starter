@@ -1,7 +1,65 @@
 package com.example.androiduitesting;
 
-@RunWith(AndroidJUnit4.class)
-@LargeTest
+
+import static androidx.test.espresso.Espresso.onData;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+
+import androidx.test.espresso.action.ViewActions;
+
+import org.junit.Test;
+import static androidx.test.espresso.Espresso.onData;
+import static org.hamcrest.Matchers.anything;
 public class MainActivityTest {
-    
+
+    public void addCity(String cityName){
+
+        // Click on Add City button
+        onView(withId(R.id.button_add)).perform(click());
+        // Type "Edmonton" in the editText
+        onView(withId(R.id.editText_name)).perform(ViewActions.typeText(cityName));
+        // Click on Confirm
+        onView(withId(R.id.button_confirm)).perform(click());
+    }
+
+    @Test
+    public void testIfSwitches(){
+        addCity("Edmonton");
+
+        // Click the city
+        onData(anything())
+                .inAdapterView(withId(R.id.city_list))
+                .atPosition(0)
+                .perform(click());
+
+        // doing the id CityName only exists in the show_activity so if it finds it then it has switched
+        onView(withId(R.id.cityName)).check(matches(isDisplayed()));
+
+        // Now check if the city name is also Edmonton
+        onView(withId(R.id.cityName)).check(matches(withText("Edmonton")));
+
+
+    }
+
+    @Test
+    public void testIfBack(){
+        addCity("Edmonton");
+
+        // Click the city
+        onData(anything())
+                .inAdapterView(withId(R.id.city_list))
+                .atPosition(0)
+                .perform(click());
+
+        onView(withId(R.id.backButton)).perform(click());
+        // doing the id CityName only exists in the show_activity so if it finds it then it has switched
+        onView(withId(R.id.city_list)).check(matches(isDisplayed()));
+
+    }
+
 }
+
